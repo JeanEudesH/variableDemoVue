@@ -7,7 +7,7 @@
  *  Contact: arnaud.charleroy@inra.fr
  * ******************************************************************************
  */
-
+configOpenSilexParameters = {};
 /**
  * Permit to resize datatables inner jquery tabs
  */
@@ -21,6 +21,28 @@ $(function() {
 });
 
 /**
+ * validate url format
+ * @param {string} urlString  url to validate
+ */
+function isValidURL(urlString) {
+  if(urlString != null && urlString.length != 0){
+    var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|'+ // domain name
+    '((\\d{1,3}\\.){3}\\d{1,3}))'+ // ip (v4) address
+    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ //port
+    '(\\?[;&amp;a-z\\d%_.~+=-]*)?'+ // query string
+    '(\\#[-a-z\\d_]*)?$','i');
+    var res = urlString.match(pattern);
+    if (res == null)
+      return false;
+    else
+      return true;
+  }
+  return false;
+};
+
+
+/**
  * return object the following object from url 
     {
     wsUrl : "http://www.opensilex.org:8080/openSilexAPI/rest/",
@@ -29,23 +51,35 @@ $(function() {
  */
 function initOpenSilexParameters() {
   var params = new window.URLSearchParams(window.location.search);
-  var config = {};
   
+  var token;
+  var wsUrl;
+
   if ($("#token").length != 0) {
-    config.token = $("#token").val();
+    token = $("#token").val();
   } else {
-    config.token = params.get("accessToken");
+    token = params.get("accessToken");
   }
   if ($("#wsUrl").length != 0) {
-    config.wsUrl = $("#wsUrl").val();
+    wsUrl = $("#wsUrl").val();
   } else {
-    config.wsUrl = params.get("wsUrl");
+    wsUrl = params.get("wsUrl");
   }
-
-  return config;
+  
+  configOpenSilexParameters.token = token;
+  configOpenSilexParameters.wsUrl = wsUrl;
 }
 
-
+/**
+ * return configuration object
+ *  {
+ *   wsUrl : "http://www.opensilex.org:8080/openSilexAPI/rest/",
+ *   accessToken : "16193fdee6ead394adf63466b49241fc"
+ *   }
+ */
+function getConfigOpenSilexParameters(){
+  return configOpenSilexParameters;
+}
 /**
  * Link a R plotly graph to a div
  * @param {string} iframeInput div input
@@ -145,7 +179,7 @@ function setListInputFromRList(inputId, RfunctionName, config, selectParameters 
     }
   ).fail(function(request) {
     $("#cssLoader").removeClass("is-active");
-    alert("Error: Token or wsURL not valid" + request.responseText);
+    alert("Error: Token or wsURL not valid");
   });
 }
 

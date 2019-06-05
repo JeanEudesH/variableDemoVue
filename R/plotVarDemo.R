@@ -33,7 +33,7 @@ plotVarDemo <- function(varURI, token, wsUrl = "www.opensilex.org/openSilexAPI/r
   phisWSClientR::initializeClientConnection(apiID="ws_private", url = wsUrl)
 
   ### Collecting Data
-  variableList <- variableList(token = token, url = wsUrl)
+  variableList <- variableList(token = token, wsUrl = wsUrl)
   ## Data
   Data <- list()
   Data = lapply(varURI,FUN = function(uri){

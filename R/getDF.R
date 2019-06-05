@@ -37,7 +37,7 @@ getDF <- function(varURI, token, smoothing = FALSE, sensor = NULL, endDate = NUL
   phisWSClientR::initializeClientConnection(apiID="ws_private", url = wsUrl)
   ## Data recuperation
   # Variable's information
-  variableList <- variableList(token = token)
+  variableList <- variableList(token = token, wsUrl = wsUrl)
   variableList <- variableList[ variableList$uri %in% varURI, ]
 
   # Data
