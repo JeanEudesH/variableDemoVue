@@ -95,60 +95,6 @@ var App = new Vue({
           alert("Error: Token or wsURL not valid");
         });
     },
-    setScientificInputFromRList: function(inputId, ){
-      $("#cssLoader").addClass("is-active");
-      var self = this
-      inputData = [];
-      // Fill variables
-      // the arguments of the function ocpu.rpc are findable here :
-      // https://www.opencpu.org/jslib.html#lib-jsonrpc
-      return ocpu.rpc(
-        //Create array of variables' options
-        // R function name
-        this.scientificobjectListParameters.RfunctionName,
-        // list of arguments names and value
-        {
-            token: this.wsParams.token,
-            wsUrl: this.wsParams.wsUrl
-        },
-    
-        function(inputList) {
-          self.fillListInput(inputId, inputList);
-          $("#cssLoader").removeClass("is-active");
-          return inputList;
-        }
-      ).fail(function(request) {
-        $("#cssLoader").removeClass("is-active");
-        alert("Error: Token or wsURL not valid");
-      });
-    },
-    setProvenanceInputFromRList: function(inputId){
-    $("#cssLoader").addClass("is-active");
-    var self = this
-    inputData = [];
-    // Fill variables
-    // the arguments of the function ocpu.rpc are findable here :
-    // https://www.opencpu.org/jslib.html#lib-jsonrpc
-    return ocpu.rpc(
-      //Create array of variables' options
-      // R function name
-      this.provenanceListParameters.RfunctionName,
-      // list of arguments names and value
-      {
-          token: this.wsParams.token,
-          wsUrl: this.wsParams.wsUrl
-      },
-  
-      function(inputList) {
-        self.fillListInput(inputId, inputList);
-        $("#cssLoader").removeClass("is-active");
-        return inputList;
-      }
-    ).fail(function(request) {
-      $("#cssLoader").removeClass("is-active");
-      alert("Error: Token or wsURL not valid");
-    });
-    },
     loadVariables: function (inputId, RfunctionName){
         this.initialize();
         // test token send in url
@@ -166,6 +112,8 @@ var App = new Vue({
         $("#cssLoader").addClass("is-active");
         // Run the R function
         var varURIs = $("#variable").val();
+        var provURIs = $("#provenance").val();
+        var objURIs = $("#scientificobject").val();
         var outputName = this.graphParameters.outputName;
         var iframeInput = this.graphParameters.iframeInput;
         return(req = ocpu.call(
@@ -173,7 +121,9 @@ var App = new Vue({
             {
                 token: this.wsParams.token,
                 wsUrl: this.wsParams.wsUrl,
-                varURI: varURIs
+                varURI: varURIs,
+                provUri: provURIs,
+                scientificobjectUri: objURIs
             },
             function(session) {
             $("#" + iframeInput).attr(

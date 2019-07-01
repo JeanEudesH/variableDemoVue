@@ -14,6 +14,8 @@
 #' @importFrom plotly add_trace
 #'
 #' @param varURI uri of the variable to plot from the \code{\link{variableList}} function or the web service directly
+#' @param provUri uri of the provenances to select objects from
+#' @param scientificobjectUri uri of the scientific objects to select
 #' @param token a token from \code{\link{getToken}} function
 #' @param wsUrl url of the webservice
 
@@ -24,12 +26,12 @@
 #'  token <- aToken$data
 #'  vars <- variableList(token = token)
 #'  vars
-#'  plotVar(vars$value[1], token = token)
+#'  plotVarDemo(vars$value[1], token = token)
 #' }
 #'
 #' @export
 
-plotVarDemo <- function(varURI, token, wsUrl = "www.opensilex.org/openSilexAPI/rest/"){
+plotVarDemo <- function(varURI, provUri = '', scientificobjectUri = '', token, wsUrl = "www.opensilex.org/openSilexAPI/rest/"){
   phisWSClientR::initializeClientConnection(apiID="ws_private", url = wsUrl)
 
   ### Collecting Data
@@ -37,7 +39,7 @@ plotVarDemo <- function(varURI, token, wsUrl = "www.opensilex.org/openSilexAPI/r
   ## Data
   Data <- list()
   Data = lapply(varURI,FUN = function(uri){
-    enviroData <- getDataVar(varURI = uri, variableList = variableList, token = token)$enviroData
+    enviroData <- getDataVar(varURI = uri, provUri = provUri, scientificobjectUri = scientificobjectUri,variableList = variableList, token = token)$enviroData
     yVar <- enviroData$value
     # Casting Date in the right format
     xVar <- as.POSIXct(enviroData$date, tz = "UTC", format = "%Y-%m-%dT%H:%M:%S")
@@ -86,14 +88,14 @@ plotVarDemo <- function(varURI, token, wsUrl = "www.opensilex.org/openSilexAPI/r
 
   ## Labels
   if (length(varURI) == 1){
-    p <- plotly::layout(p, title = paste('<b>Tendency of ', variableList[1,"name"], '</b><br><i>', variableList[1,"method"], '</i>' , sep = ""))
+    p <- plotly::layout(p, title = paste('<b>Tendency of ', variableList[1,"label"], '</b><br><i>', variableList[1,"method"], '</i>' , sep = ""))
   } else if (i == 2) {
-    y <- list(title = paste('<b>', variableList[2, "name"], ' (', variableList[2, "unity"], ')' , '</b>', sep = ""), color = '#282828', showgrid = FALSE,
+    y <- list(title = paste('<b>', variableList[2, "label"], ' (', variableList[2, "unity"], ')' , '</b>', sep = ""), color = '#282828', showgrid = FALSE,
               gridwidth = 2,  tickfont = list(family = 'serif'), overlaying = "y", side = "right")
     p <- plotly::layout(p, yaxis2 = y)
     p <- plotly::layout(p, title = "<b>Tendency of environmental variables among time</br>")
   } else {
-    y <- list(title = paste('<b>', variableList[2, "name"], ' (', variableList[2, "unity"], ')' , '</b>', sep = ""), color = '#282828', showgrid = FALSE,
+    y <- list(title = paste('<b>', variableList[2, "label"], ' (', variableList[2, "unity"], ')' , '</b>', sep = ""), color = '#282828', showgrid = FALSE,
               gridwidth = 2,  tickfont = list(family = 'serif'), overlaying = "y", side = "right")
     p <- plotly::layout(p, yaxis = y)
     p <- plotly::layout(p, title = "<b>Tendency of environmental variables among time</br>")

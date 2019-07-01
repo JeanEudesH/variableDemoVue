@@ -4,11 +4,15 @@
 \alias{plotVarDemo}
 \title{Plot Environmental Data}
 \usage{
-plotVarDemo(varURI, token,
+plotVarDemo(varURI, provUri = "", scientificobjectUri = "", token,
   wsUrl = "www.opensilex.org/openSilexAPI/rest/")
 }
 \arguments{
 \item{varURI}{uri of the variable to plot from the \code{\link{variableList}} function or the web service directly}
+
+\item{provUri}{uri of the provenances to select objects from}
+
+\item{scientificobjectUri}{uri of the scientific objects to select}
 
 \item{token}{a token from \code{\link{getToken}} function}
 
@@ -24,7 +28,7 @@ Demonstration function
  token <- aToken$data
  vars <- variableList(token = token)
  vars
- plotVar(vars$value[1], token = token)
+ plotVarDemo(vars$value[1], token = token)
 }
 
 }

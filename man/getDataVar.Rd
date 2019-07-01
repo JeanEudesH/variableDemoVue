@@ -4,10 +4,15 @@
 \alias{getDataVar}
 \title{Get Data from WS2 and formate them}
 \usage{
-getDataVar(varURI, variableList, token)
+getDataVar(varURI, provUri = "", scientificobjectUri = "",
+  variableList, token)
 }
 \arguments{
 \item{varURI}{uri of the variable to plot, from the \code{\link{variableList}} function or the web service directly}
+
+\item{provUri}{uri of the provenances to select objects from}
+
+\item{scientificobjectUri}{uri of the scientific objects to select}
 
 \item{variableList}{from \code{\link{variableList}}}
 

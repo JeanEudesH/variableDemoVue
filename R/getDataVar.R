@@ -12,6 +12,8 @@
 #' @importFrom phisWSClientR getVariables2
 #'
 #' @param varURI uri of the variable to plot, from the \code{\link{variableList}} function or the web service directly
+#' @param provUri uri of the provenances to select objects from
+#' @param scientificobjectUri uri of the scientific objects to select
 #' @param variableList from \code{\link{variableList}}
 #' @param token a token from \code{\link{getToken}} function
 #'
@@ -29,7 +31,7 @@
 #'                   variableList = varPrettyTot,
 #'                   token = token)
 #' }
-getDataVar <- function(varURI, variableList, token) {
+getDataVar <- function(varURI, provUri = '', scientificobjectUri = '', variableList, token) {
 
   # Recuperation of the uri of the variable of interest
   numVar <- match(varURI, variableList$uri)
@@ -37,8 +39,8 @@ getDataVar <- function(varURI, variableList, token) {
   nameUriVar <-  variableList$uri[numVar]
 
   # Recuperation of the data from the WS
-  myCount <- phisWSClientR::getEnvironmentData(token = token, variable = varURI)$totalCount
-  enviroData <- phisWSClientR::getEnvironmentData(token = token, variable =  varURI, verbose = TRUE, pageSize = myCount)$data
+  myCount <- phisWSClientR::getData(token = token, variableUri = varURI, objectUri = scientificobjectUri, provenanceUri = provUri)$totalCount
+  enviroData <- phisWSClientR::getData(token = token, variableUri =  varURI, objectUri = scientificobjectUri, provenanceUri = provUri, verbose = TRUE, pageSize = myCount)$data
 
   # Creation of the dataTable to return
   nomVar <- paste(toupper(substr(variableList$name[numVar],1,1)), substr(variableList$name[numVar],2,nchar(variableList$name[numVar])), sep = "")
