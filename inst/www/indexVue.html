@@ -48,7 +48,7 @@
                         </div>
                           <!-- submit -->
                         <div class="form-group">
-                        <button id="loadVariableVue" type="submit" v-on:click.once="loadVariables('variable')" class="btn btn-primary">
+                        <button id="loadVariableVue" type="submit" v-on:click.once="loadVariables('variable', 'variableList'), loadVariables('scientificobject', 'scientificobjectList'),loadVariables('provenance', 'provenanceList')" class="btn btn-primary">
                             Set Web Service parameters Vue!
                         </button>
 
@@ -56,13 +56,25 @@
                         <!-- variable -->
                         <div class="form-group">
                             <strong>
-                                <label for="variable"> Variable </label>
+                                <label for="variable"> Variable : {{variableListParameters.RfunctionName}} </label>
                             </strong>
                             <select  class="form-control" id="variable"  class="form-control" required></select>
                         </div>
-                        <!-- submit -->
-                        <div class="form-group"></div>
 
+                        <div class="form-group">
+                            <strong>
+                                <label for="provenance"> Provenance : {{provenanceListParameters.RfunctionName}} </label>
+                            </strong>
+                            <select  class="form-control" id="provenance"  class="form-control" required></select>
+                        </div>
+
+                        <div class="form-group">
+                            <strong>
+                                <label for="scientificobject"> Scientific Object : {{scientificobjectListParameters.RfunctionName}} </label>
+                            </strong>
+                            <select  class="form-control" id="scientificobject"  class="form-control" required></select>
+                        </div>
+                        <!-- submit -->
                         <button id="submitVue" type="submit"  v-on:click.prevent="showGraph" class="btn btn-primary">
                             Show graphVue!
                         </button>

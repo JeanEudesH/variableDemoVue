@@ -1,15 +1,15 @@
 #-------------------------------------------------------------------------------
-# Program: provenanceList.R
-# Objective: list of different provenances within the data
+# Program: scientificObjectList.R
+# Objective: list of different scientific objects within the data
 # Authors: Jean-Eudes Hollebecq
-# Creation: 21/06/2019
+# Creation: 1/07/2019
 # Update:
 #-------------------------------------------------------------------------------
 
-#' @title Get provenance's Names from WS2 and formate them
+#' @title Get scientific object's Names from WS2 and formate them
 #'
 #' @importFrom phisWSClientR initializeClientConnection
-#' @importFrom phisWSClientR getProvenances
+#' @importFrom phisWSClientR getScientificObjects
 #'
 #' @param token a token from \code{\link{getToken}} function
 #' @param wsUrl url of the webservice
@@ -21,23 +21,24 @@
 #' initializeClientConnection(apiID="ws_private", url = "www.opensilex.org/openSilexAPI/rest/")
 #'  aToken <- getToken("guest@opensilex.org","guest")
 #'  token <- aToken$data
-#'  provenanceList(token = token)
+#'  scientificobjectList(token = token)
 #' }
-provenanceList <- function(token, wsUrl = "www.opensilex.org/openSilexAPI/rest/"){
+scientificobjectList <- function(token, wsUrl = "www.opensilex.org/openSilexAPI/rest/"){
   phisWSClientR::initializeClientConnection(apiID="ws_private", url = wsUrl)
 
 
   # Recuperation of variables information
-  rawProvenances <- phisWSClientR::getProvenances(token = token)
+  totalCount <- phisWSClientR::getScientificObjects(token = token)$totalCount
+  rawScientificObjects <- phisWSClientR::getScientificObjects(token = token, pageSize = totalCount)
 
   # Extraction of the information of interest
-  label <- rawProvenances$data$label
-  uri <- rawProvenances$data$uri
+  label <- rawScientificObjects$data$label
+  uri <- rawScientificObjects$data$uri
 
   # Creation of the dataTable with information of interest
-  provenanceList <- data.frame(label = label, uri = uri)
-  provenanceList <- data.frame(lapply(provenanceList, as.character), stringsAsFactors=FALSE)
+  ScientificObjectsList <- data.frame(label = label, uri = uri)
+  ScientificObjectsList <- data.frame(lapply(ScientificObjectsList, as.character), stringsAsFactors=FALSE)
 
-  return(provenanceList)
+  return(ScientificObjectsList)
 }
 

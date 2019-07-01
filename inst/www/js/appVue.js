@@ -1,5 +1,5 @@
 // comment out this line from development 
-//ocpu.seturl("http://0.0.0.0:8004/ocpu/library/compareVariableDemo/R");
+ocpu.seturl("http://0.0.0.0:8004/ocpu/library/compareVariableDemoVue/R");
 
 var App = new Vue({
   el: "#DemoApp",
@@ -9,11 +9,23 @@ var App = new Vue({
         wsUrl: "",
         params: new window.URLSearchParams(window.location.search)
     },
-    listParameters: {
+    variableListParameters: {
         multiple: true,
         maximumSelectionLength: 2,
         RfunctionName: "variableList",
         inputId: "variable"
+    },
+    provenanceListParameters: {
+      multiple: true,
+      maximumSelectionLength: 2,
+      RfunctionName: "provenanceList",
+      inputId: "provenance"
+    },
+    scientificobjectListParameters: {
+      multiple: true,
+      maximumSelectionLength: 10,
+      RfunctionName: "scientificobjectList",
+      inputId: "scientificobject"
     },
     graphParameters: {
         iframeInput: "plotDiv",
@@ -55,17 +67,18 @@ var App = new Vue({
           finalSelectParameters = { ...defaultSelectParameters, ...selectParameters };
           $("#" + inputId).select2(finalSelectParameters);
     },
-    setListInputFromRList: function(inputId){
+    setListInputFromRList: function(inputId, RfunctionName){
         $("#cssLoader").addClass("is-active");
         var self = this
         inputData = [];
+        inputList = [];
         // Fill variables
         // the arguments of the function ocpu.rpc are findable here :
         // https://www.opencpu.org/jslib.html#lib-jsonrpc
         return ocpu.rpc(
           //Create array of variables' options
           // R function name
-          this.listParameters.RfunctionName,
+          RfunctionName,
           // list of arguments names and value
           {
               token: this.wsParams.token,
@@ -82,7 +95,61 @@ var App = new Vue({
           alert("Error: Token or wsURL not valid");
         });
     },
-    loadVariables: function (inputId ){
+    setScientificInputFromRList: function(inputId, ){
+      $("#cssLoader").addClass("is-active");
+      var self = this
+      inputData = [];
+      // Fill variables
+      // the arguments of the function ocpu.rpc are findable here :
+      // https://www.opencpu.org/jslib.html#lib-jsonrpc
+      return ocpu.rpc(
+        //Create array of variables' options
+        // R function name
+        this.scientificobjectListParameters.RfunctionName,
+        // list of arguments names and value
+        {
+            token: this.wsParams.token,
+            wsUrl: this.wsParams.wsUrl
+        },
+    
+        function(inputList) {
+          self.fillListInput(inputId, inputList);
+          $("#cssLoader").removeClass("is-active");
+          return inputList;
+        }
+      ).fail(function(request) {
+        $("#cssLoader").removeClass("is-active");
+        alert("Error: Token or wsURL not valid");
+      });
+    },
+    setProvenanceInputFromRList: function(inputId){
+    $("#cssLoader").addClass("is-active");
+    var self = this
+    inputData = [];
+    // Fill variables
+    // the arguments of the function ocpu.rpc are findable here :
+    // https://www.opencpu.org/jslib.html#lib-jsonrpc
+    return ocpu.rpc(
+      //Create array of variables' options
+      // R function name
+      this.provenanceListParameters.RfunctionName,
+      // list of arguments names and value
+      {
+          token: this.wsParams.token,
+          wsUrl: this.wsParams.wsUrl
+      },
+  
+      function(inputList) {
+        self.fillListInput(inputId, inputList);
+        $("#cssLoader").removeClass("is-active");
+        return inputList;
+      }
+    ).fail(function(request) {
+      $("#cssLoader").removeClass("is-active");
+      alert("Error: Token or wsURL not valid");
+    });
+    },
+    loadVariables: function (inputId, RfunctionName){
         this.initialize();
         // test token send in url
         if (this.wsParams.token == null || this.wsParams.token == "") {
@@ -93,7 +160,7 @@ var App = new Vue({
           alert("A wsUrl is required");
         return false;
         } 
-        this.setListInputFromRList(inputId = inputId);
+        this.setListInputFromRList(inputId = inputId, RfunctionName = RfunctionName);
     },
     showGraph: function(){
         $("#cssLoader").addClass("is-active");

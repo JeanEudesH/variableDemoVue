@@ -31,11 +31,9 @@ variableList <- function(token, wsUrl = "www.opensilex.org/openSilexAPI/rest/"){
   rawVar <- phisWSClientR::getVariables2(token = token)
 
   # Extraction of the information of interest
-  names <- rawVar$data$label
   methods <- rawVar$data$label
 
   for (i in 1:length(names)){
-    names[i] <- strsplit(names[i], split="_")[[1]][1]
     methods[i] <- strsplit(methods[i], split="_")[[1]][2]
   }
   label <- rawVar$data$label
@@ -44,7 +42,7 @@ variableList <- function(token, wsUrl = "www.opensilex.org/openSilexAPI/rest/"){
   uriVar <- rawVar$data$uri
 
   # Creation of the dataTable with information of interest
-  variableList <- data.frame(name = names, method = methods, acronym = acronyms, unity = unitVar, uri = uriVar, label = label)
+  variableList <- data.frame(method = methods, acronym = acronyms, unity = unitVar, uri = uriVar, label = label)
   variableList <- data.frame(lapply(variableList, as.character), stringsAsFactors=FALSE)
 
   return(variableList)
