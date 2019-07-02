@@ -1,9 +1,9 @@
 Package: compareVariableDemoVue
 Type: Package
 Title: Study opensilex variables
-Version: 0.2.0
-Author: Jean-Eudes Hollebecq
-Maintainer: Jean-Eudes Hollebecq <jean-eudes.hollebecq@inra.fr>
+Version: 1.0.0
+Author: Jean-Eudes Hollebecq, Arnaud Charleroy
+Maintainer: Jean-Eudes Hollebecq <jean-eudes.hollebecq@inra.fr>, Arnaud Charleroy <arnaud.charleroy@inra.fr>
 Description: A package R to visualize environment data and experience Vue.js framework.
 License: AGPL-3
 Encoding: UTF-8
