@@ -5,10 +5,10 @@ R Application running with OpenCPU under VUE.js framework.
 
 Install this app using the following command. And run it as follows :
 ```
-install_apps("JeanEudesH/demoVueJS")
-ocpu_start_app("JeanEudesH/demoVueJS")
+install_apps("JeanEudesH/variableDemoVue")
+ocpu_start_app("JeanEudesH/variableDemoVue")
 #or
-ocpu_start_app("compareVariableDemoVue")
+ocpu_start_app("variableDemoVue")
 ```
 And finally open the following link in your browser :
 
