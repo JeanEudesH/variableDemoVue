@@ -1,5 +1,5 @@
 // comment out this line from development 
-ocpu.seturl("http://0.0.0.0:8004/ocpu/library/compareVariableDemoVue/R");
+//ocpu.seturl("http://0.0.0.0:8004/ocpu/library/compareVariableDemoVue/R");
 
 var App = new Vue({
   el: "#DemoApp",
