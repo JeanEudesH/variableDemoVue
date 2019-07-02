@@ -39,7 +39,7 @@ plotVarDemo <- function(varURI, provUri = '', scientificobjectUri = '', token, w
   ## Data
   Data <- list()
   Data = lapply(varURI,FUN = function(uri){
-    enviroData <- getDataVar(varURI = uri, provUri = provUri, scientificobjectUri = scientificobjectUri,variableList = variableList, token = token)$enviroData
+    enviroData <- getDataVar(varURI = uri, provUri = provUri, scientificobjectUri = scientificobjectUri, variableList = variableList, token = token)$enviroData
     yVar <- enviroData$value
     # Casting Date in the right format
     xVar <- as.POSIXct(enviroData$date, tz = "UTC", format = "%Y-%m-%dT%H:%M:%S")

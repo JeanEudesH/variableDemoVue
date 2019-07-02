@@ -9,7 +9,8 @@
 #' @title Get Data from WS2 and formate them
 #'
 #' @importFrom phisWSClientR initializeClientConnection
-#' @importFrom phisWSClientR getVariables2
+#' @importFrom phisWSClientR getVariablesDetails
+#' @importFrom phisWSClientR getData
 #'
 #' @param varURI uri of the variable to plot, from the \code{\link{variableList}} function or the web service directly
 #' @param provUri uri of the provenances to select objects from

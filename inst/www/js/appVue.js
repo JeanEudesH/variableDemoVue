@@ -59,6 +59,11 @@ var App = new Vue({
             item.text = inputItem.label;
             inputData.push(item);
           });
+          //initialisation
+          item = {};
+          item.id = "";
+          item.text = "No filter";
+          inputData.push(item);
           // console.log(inputData);
           defaultSelectParameters = {
             data: inputData
