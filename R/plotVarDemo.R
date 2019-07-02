@@ -40,6 +40,7 @@ plotVarDemo <- function(varURI, provUri = '', scientificobjectUri = '', token, w
   Data <- list()
   Data = lapply(varURI,FUN = function(uri){
     enviroData <- getDataVar(varURI = uri, provUri = provUri, scientificobjectUri = scientificobjectUri, variableList = variableList, token = token)$enviroData
+    tryCatch(as.POSIXct(enviroData$date, tz = "UTC", format = "%Y-%m-%dT%H:%M:%S"), error = function() stop("No data found, please try another request."))
     yVar <- enviroData$value
     # Casting Date in the right format
     xVar <- as.POSIXct(enviroData$date, tz = "UTC", format = "%Y-%m-%dT%H:%M:%S")

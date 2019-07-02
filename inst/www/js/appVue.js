@@ -52,18 +52,15 @@ var App = new Vue({
         selectParameters = [
             this.wsParams.token,
             this.wsParams.wsUrl
-        ]
+        ];
+        inputData = [];
+        inputData.push({id: "", text: "No filter"});
         inputList.forEach(function(inputItem) {
             item = {};
             item.id = inputItem.uri;
             item.text = inputItem.label;
             inputData.push(item);
           });
-          //initialisation
-          item = {};
-          item.id = "";
-          item.text = "No filter";
-          inputData.push(item);
           // console.log(inputData);
           defaultSelectParameters = {
             data: inputData
@@ -140,7 +137,7 @@ var App = new Vue({
           }).fail(function(request) {
             $("#submit").removeAttr("disabled");
             $("#cssLoader").removeClass("is-active");
-            alert("An unknown error has append : " + request.responseText);
+            alert("An error has append : " + request.responseText);
           })
         );
     }
