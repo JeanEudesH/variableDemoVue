@@ -7,8 +7,9 @@ var App = new Vue({
     wsParams: {
         token: "",
         wsUrl: "",
-        params: new window.URLSearchParams(window.location.search)
-    },
+        params: new window.URLSearchParams(window.location.search),
+        hideIdentificationInputs: false   
+       },
     variableListParameters: {
         multiple: true,
         maximumSelectionLength: 2,
@@ -34,18 +35,34 @@ var App = new Vue({
         outputName: "plotWidget.html"
     },
 
-  },
+  },  mounted:function(){
+    this.initialize();
+    
+   
+   },
   methods: {
     initialize: function (){
-        if ($("#token").length != 0) {
-          this.wsParams.token = $("#token").val();
-        } else {
+      console.log( this.wsParams.params.get("accessToken"))
+        if ( this.wsParams.params.get("accessToken") != null) {
           this.wsParams.token = this.wsParams.params.get("accessToken");
-        }
-        if ($("#wsUrl").length != 0) {
-          this.wsParams.wsUrl = $("#wsUrl").val();
         } else {
+          this.wsParams.token = $("#token").val();
+          
+        }
+        if (this.wsParams.params.get("wsUrl") != null) {
           this.wsParams.wsUrl = this.wsParams.params.get("wsUrl");
+        } else {
+          this.wsParams.wsUrl = $("#wsUrl").val();
+        }
+        console.log(this.wsParams.wsUrl);
+        if(this.wsParams.params.get("accessToken") != null && this.wsParams.params.get("wsUrl") != null){
+          this.wsParams.hideIdentificationInputs = true;
+          $("#accessToken").css("display","none");
+          $("#url").css("display","none");
+          $("#wsForm").css("display","none");
+          this.loadVariables('variable', 'variableList');
+          this.loadVariables('scientificobject', 'scientificobjectList');
+          this.loadVariables('provenance', 'provenanceList');
         }
     },
     fillListInput: function(inputId, inputList){
@@ -98,7 +115,6 @@ var App = new Vue({
         });
     },
     loadVariables: function (inputId, RfunctionName){
-        this.initialize();
         // test token send in url
         if (this.wsParams.token == null || this.wsParams.token == "") {
           alert("An accessToken is required");

@@ -32,25 +32,28 @@
                 <a href="http://www.opensilex.org:8080/openSilexAPI/api-docs/#!/brapiv1token/getToken" target="blank"><code>Get a token</code></a>
                 <form role="form">
                     <div id="inputForm">
-                        <!-- token -->
-                        <div class="form-group">
-                            <strong>
-                                <label for="token"> Token </label>
-                            </strong>
-                            <input class="form-control" type="text" id="token" name="token" />
+                        <div id="wsForm" v-on:load.once="initialize()" >
+                                                    <!-- token -->
+                        <div id="accessToken" class="form-group">
+                                <strong>
+                                    <label for="token"> Token </label>
+                                </strong>
+                                <input class="form-control" type="text" id="token" name="token" v-model="wsParams.token"/>
+                            </div>
+                            <!-- wsUrl -->
+                            <div id="url" class="form-group">
+                                <strong>
+                                    <label for="wsUrl"> wsUrl </label>
+                                </strong>
+                                <input class="form-control" type="text" id="wsUrl" name="wsUrl" value="www.opensilex.org/openSilexAPI/rest/"  v-model="wsParams.wsUrl"/>
+                            </div>
+                              <!-- submit -->
+                            <div class="form-group">
+                            <button id="loadVariableVue" type="submit" v-on:click="loadVariables('variable', 'variableList'), loadVariables('scientificobject', 'scientificobjectList'),loadVariables('provenance', 'provenanceList')" class="btn btn-primary">
+                                Set Web Service parameters Vue!
+                            </button>
+                            
                         </div>
-                        <!-- wsUrl -->
-                        <div class="form-group">
-                            <strong>
-                                <label for="wsUrl"> wsUrl </label>
-                            </strong>
-                            <input class="form-control" type="text" id="wsUrl" name="wsUrl" value="www.opensilex.org/openSilexAPI/rest/" />
-                        </div>
-                          <!-- submit -->
-                        <div class="form-group">
-                        <button id="loadVariableVue" type="submit" v-on:click.once="loadVariables('variable', 'variableList'), loadVariables('scientificobject', 'scientificobjectList'),loadVariables('provenance', 'provenanceList')" class="btn btn-primary">
-                            Set Web Service parameters Vue!
-                        </button>
 
                         </div>
                         <!-- variable -->
