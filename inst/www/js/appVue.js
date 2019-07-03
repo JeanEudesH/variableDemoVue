@@ -71,14 +71,10 @@ var App = new Vue({
             inputData.push(item);
           });
           // console.log(inputData);
-          defaultSelectParameters = {
-            data: inputData,
-            multiple: this[inputId].selectParameters.multiple,
-            maximumSelectionLength: this[inputId].selectParameters.maximumSelectionLength,
-          };
+          defaultSelectParameters = this[inputId].selectParameters;
+          defaultSelectParameters.data = inputData;
           // merge objects
-          finalSelectParameters = { ...defaultSelectParameters };
-          $("#" + inputId).select2(finalSelectParameters);
+          $("#" + inputId).select2(defaultSelectParameters);
     },
     loadVariables: function (inputId){
         // test token send in url
