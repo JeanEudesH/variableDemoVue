@@ -29,19 +29,19 @@
             <br>
             <div class="col-md-12" id = "DemoApp">
                 <!-- form -->
-                <a href="http://www.opensilex.org:8080/openSilexAPI/api-docs/#!/brapiv1token/getToken" target="blank"><code>Get a token</code></a>
                 <form role="form">
                     <div id="inputForm">
-                        <div id="wsForm" v-on:load.once="initialize()" >
-                                                    <!-- token -->
-                        <div id="accessToken" class="form-group">
+                        <div id="wsForm">
+                                <a href="http://www.opensilex.org:8080/openSilexAPI/api-docs/#!/brapiv1token/getToken" target="blank"><code>Get a token</code></a>
+                            <!-- token -->
+                        <div class="form-group">
                                 <strong>
                                     <label for="token"> Token </label>
                                 </strong>
                                 <input class="form-control" type="text" id="token" name="token" v-model="wsParams.token"/>
                             </div>
                             <!-- wsUrl -->
-                            <div id="url" class="form-group">
+                            <div class="form-group">
                                 <strong>
                                     <label for="wsUrl"> wsUrl </label>
                                 </strong>
@@ -49,8 +49,8 @@
                             </div>
                               <!-- submit -->
                             <div class="form-group">
-                            <button id="loadVariableVue" type="submit" v-on:click="loadVariables('variable', 'variableList'), loadVariables('scientificobject', 'scientificobjectList'),loadVariables('provenance', 'provenanceList')" class="btn btn-primary">
-                                Set Web Service parameters Vue!
+                            <button id="loadVariableVue" type="submit" v-on:click="loadVariables('variable'), loadVariables('scientificobject'),loadVariables('provenance')" class="btn btn-primary">
+                                Set Web Service parameters!
                             </button>
                             
                         </div>
@@ -59,27 +59,27 @@
                         <!-- variable -->
                         <div class="form-group">
                             <strong>
-                                <label for="variable"> Variable : {{variableListParameters.RfunctionName}} </label>
+                                <label for="variable"> Variable : {{variable.RfunctionName}} </label>
                             </strong>
                             <select  class="form-control" id="variable"  class="form-control" required></select>
                         </div>
 
                         <div class="form-group">
                             <strong>
-                                <label for="provenance"> Provenance : {{provenanceListParameters.RfunctionName}} </label>
+                                <label for="provenance"> Provenance : {{provenance.RfunctionName}} </label>
                             </strong>
                             <select  class="form-control" id="provenance"  class="form-control" required></select>
                         </div>
 
                         <div class="form-group">
                             <strong>
-                                <label for="scientificobject"> Scientific Object : {{scientificobjectListParameters.RfunctionName}} </label>
+                                <label for="scientificobject"> Scientific Object : {{scientificobject.RfunctionName}} </label>
                             </strong>
                             <select  class="form-control" id="scientificobject"  class="form-control" required></select>
                         </div>
                         <!-- submit -->
                         <button id="submitVue" type="submit"  v-on:click.prevent="showGraph" class="btn btn-primary">
-                            Show graphVue!
+                            Show graph!
                         </button>
 
                         <hr>

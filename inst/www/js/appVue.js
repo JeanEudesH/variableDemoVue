@@ -1,5 +1,5 @@
 // comment out this line from development 
-//ocpu.seturl("http://0.0.0.0:8004/ocpu/library/compareVariableDemoVue/R");
+// ocpu.seturl("http://0.0.0.0:8004/ocpu/library/compareVariableDemoVue/R");
 
 var App = new Vue({
   el: "#DemoApp",
@@ -10,23 +10,26 @@ var App = new Vue({
         params: new window.URLSearchParams(window.location.search),
         hideIdentificationInputs: false   
        },
-    variableListParameters: {
-        multiple: true,
-        maximumSelectionLength: 2,
+    variable: {
+      selectParameters:{
+        multiple: false,
+        maximumSelectionLength: 2
+      },        
         RfunctionName: "variableList",
-        inputId: "variable"
     },
-    provenanceListParameters: {
-      multiple: true,
-      maximumSelectionLength: 2,
-      RfunctionName: "provenanceList",
-      inputId: "provenance"
+    provenance: {
+      selectParameters:{
+        multiple: false,
+        maximumSelectionLength: 2
+      },        
+      RfunctionName: "provenanceList"
     },
-    scientificobjectListParameters: {
-      multiple: true,
-      maximumSelectionLength: 10,
-      RfunctionName: "scientificobjectList",
-      inputId: "scientificobject"
+    scientificobject: {
+      selectParameters:{
+        multiple: false,
+        maximumSelectionLength: 10
+      },        
+      RfunctionName: "scientificobjectList"
     },
     graphParameters: {
         iframeInput: "plotDiv",
@@ -37,39 +40,28 @@ var App = new Vue({
 
   },  mounted:function(){
     this.initialize();
-    
-   
    },
   methods: {
     initialize: function (){
-      console.log( this.wsParams.params.get("accessToken"))
         if ( this.wsParams.params.get("accessToken") != null) {
           this.wsParams.token = this.wsParams.params.get("accessToken");
         } else {
           this.wsParams.token = $("#token").val();
-          
         }
         if (this.wsParams.params.get("wsUrl") != null) {
           this.wsParams.wsUrl = this.wsParams.params.get("wsUrl");
         } else {
           this.wsParams.wsUrl = $("#wsUrl").val();
         }
-        console.log(this.wsParams.wsUrl);
         if(this.wsParams.params.get("accessToken") != null && this.wsParams.params.get("wsUrl") != null){
           this.wsParams.hideIdentificationInputs = true;
-          $("#accessToken").css("display","none");
-          $("#url").css("display","none");
           $("#wsForm").css("display","none");
-          this.loadVariables('variable', 'variableList');
-          this.loadVariables('scientificobject', 'scientificobjectList');
-          this.loadVariables('provenance', 'provenanceList');
+          this.loadVariables('variable');
+          this.loadVariables('scientificobject');
+          this.loadVariables('provenance');
         }
     },
     fillListInput: function(inputId, inputList){
-        selectParameters = [
-            this.wsParams.token,
-            this.wsParams.wsUrl
-        ];
         inputData = [];
         inputData.push({id: "", text: "No filter"});
         inputList.forEach(function(inputItem) {
@@ -80,13 +72,24 @@ var App = new Vue({
           });
           // console.log(inputData);
           defaultSelectParameters = {
-            data: inputData
+            data: inputData,
+            multiple: this[inputId].selectParameters.multiple,
+            maximumSelectionLength: this[inputId].selectParameters.maximumSelectionLength,
           };
           // merge objects
-          finalSelectParameters = { ...defaultSelectParameters, ...selectParameters };
+          finalSelectParameters = { ...defaultSelectParameters };
           $("#" + inputId).select2(finalSelectParameters);
     },
-    setListInputFromRList: function(inputId, RfunctionName){
+    loadVariables: function (inputId){
+        // test token send in url
+        if (this.wsParams.token == null || this.wsParams.token == "") {
+          alert("An accessToken is required");
+        return false;
+        } 
+        if (this.wsParams.wsUrl == null || this.wsParams.wsUrl == "") {
+          alert("A wsUrl is required");
+        return false;
+        } 
         $("#cssLoader").addClass("is-active");
         var self = this
         inputData = [];
@@ -97,7 +100,7 @@ var App = new Vue({
         return ocpu.rpc(
           //Create array of variables' options
           // R function name
-          RfunctionName,
+          this[inputId].RfunctionName,
           // list of arguments names and value
           {
               token: this.wsParams.token,
@@ -109,22 +112,10 @@ var App = new Vue({
             $("#cssLoader").removeClass("is-active");
             return inputList;
           }
-        ).fail(function(request) {
+        ).fail(function() {
           $("#cssLoader").removeClass("is-active");
           alert("Error: Token or wsURL not valid");
         });
-    },
-    loadVariables: function (inputId, RfunctionName){
-        // test token send in url
-        if (this.wsParams.token == null || this.wsParams.token == "") {
-          alert("An accessToken is required");
-        return false;
-        } 
-        if (this.wsParams.wsUrl == null || this.wsParams.wsUrl == "") {
-          alert("A wsUrl is required");
-        return false;
-        } 
-        this.setListInputFromRList(inputId = inputId, RfunctionName = RfunctionName);
     },
     showGraph: function(){
         $("#cssLoader").addClass("is-active");
